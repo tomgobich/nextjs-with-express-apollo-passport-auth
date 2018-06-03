@@ -6,7 +6,7 @@ This example is a customized implementation of [ooaed's next-apollo-auth boilerp
 
 **Node Version Note**
 
-This project uses [object descructoring [see support]](https://node.green/#ES2015-syntax-destructuring--assignment-object-destructuring-expression) within the Express server, so either use Node v6.4.0+ or replace the destructuring within `server > data > resolvers.js`
+This project uses [object spread [see support]](https://node.green/#ES2018-features-object-rest-spread-properties-object-spread-properties) within the Express server, so either use Node v8.6.0+ or replace the object spread within `server > data > resolvers.js`
 
 **Graphql File Types**
 
