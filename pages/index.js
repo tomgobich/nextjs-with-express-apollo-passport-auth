@@ -5,6 +5,7 @@ import cookie from 'cookie'
 import withData from '../lib/withData'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import redirect from '../lib/redirect'
+import Layout from '../components/layout'
 
 class Index extends Component {
   static async getInitialProps(context, apolloClient) {
@@ -17,9 +18,9 @@ class Index extends Component {
     const { account } = this.props.loggedInUser
     if (account) {
       return (
-        <Fragment>
-          <h1> Hello {account.name}! </h1>
-          <div>
+        <Layout account={account}>
+          <div className='container'>
+            <h1> Hello {account.name}! </h1>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
@@ -34,7 +35,7 @@ class Index extends Component {
               <a>Go to Profile</a>
             </Link>
           </div>
-        </Fragment>
+        </Layout>
       )
     }
 
