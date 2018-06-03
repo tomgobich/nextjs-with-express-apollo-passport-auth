@@ -66,9 +66,11 @@ Within next.config.js you'll find an exported function called withGraphql. This 
 
 #### Schema
 
-Here we have one `User`'s type with three fields (email, name, and password), one `Query` type with a profile field just to keep GraphQL's mouth shut about having a Query type defined. We have two `Mutation` types (login, and signup). These are exported from `server > data > auth > types.js` into `server > data > schema.js
+Here we have one `User`'s type with three fields (email, name, and password), one `Query` type with a profile field just to keep GraphQL's mouth shut about having a Query type defined. We have two `Mutation` types (login, and signup). These are exported from `server > data > auth > types.js` into `server > data > schema.js`
 
 ```ts
+
+// types.js
 type User {
 	email: String
 	name: String
@@ -83,6 +85,19 @@ type Mutation {
 	createUser(email: String!, name: String, password: String!): User
 	login(email: String!, password: String!): User
 }
+
+// schema.js
+const { authTypes, authQueries, authMutations } = require('./auth/types')
+
+const typeDefs = `
+	${authTypes}
+	type Query {
+		${authQueries}
+	}
+	type Mutation {
+		${authMutations}
+	}
+`
 ```
 
 #### Resolvers
@@ -90,33 +105,56 @@ type Mutation {
 The resolvers we care about here are `createUser` and `login`. They both take in `email` and `password` as arguments with `createUser` taking an extra `name` argument.
 
 ```js
-Mutation: {
-		createUser(root, { email, name, password }, { login }) {
-			const user = new User({ email, name })
+// auth/mutations.js
+createUser(root, { email, name, password }, { login }) {
+	const user = new User({ email, name })
 
-			return new Promise((resolve, reject) => {
-				return User.register(user, password, err => {
-					if (err) {
-						reject(err)
-					} else {
-						login(user, () => resolve(user))
-					}
-				})
-			})
-		},
-		login(root, { email, password }, { login }) {
-			return new Promise((resolve, reject) => {
-				return User.authenticate()(email, password, (err, user) => {
-					// user returns false if username / email incorrect
-					if (user) {
-						login(user, () => resolve(user))
-					} else {
-						reject('Email / Password Incorrect')
-					}
-				})
-			})
+	return new Promise((resolve, reject) => {
+		return User.register(user, password, (err) => {
+			if (err) {
+				reject(err)
+			}
+			else {
+				login(user, () => resolve(user))
+			}
+		})
+	})
+},
+login(root, { email, password }, { login }) {
+	return new Promise((resolve, reject) => {
+		return User.authenticate()(email, password, (err, user) => {
+			// user returns false if username / email incorrect
+			if (user) {
+				login(user, () => resolve(user))
+			}
+			else {
+				reject('The email or password you supplied is incorrect')
+			}
+		})
+	})
+},
+// ...
+
+// auth/queries.js
+account(root, args, req) {
+	return new Promise((resolve, reject) => {
+		if (req.user) {
+			return resolve(req.user)
 		}
-	}
+
+		return resolve(null)
+	})
+}
+
+// resolvers.js
+Query: {
+	// imported from auth/queries.js
+	...authQueries
+},
+Mutation: {
+	// imported from auth/mutations.js
+	...authMutations
+}
 ```
 
 ### Models
@@ -158,7 +196,7 @@ userSchema.plugin(passportLocalMongoose, {
 
 ### Deploy
 
-[![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/ooade/next-apollo-auth)
+[![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/tomgobich/nextjs-with-express-apollo-passport-auth)
 
 ### License
 
