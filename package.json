@@ -40,7 +40,7 @@
     "lost": "^8.2.1",
     "mongoose": "^5.0.7",
     "mongoose-mongodb-errors": "0.0.2",
-    "next": "^5.0.0",
+    "next": "^6.0.0",
     "next-plugin-graphql": "^0.0.1",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",

@@ -69,5 +69,5 @@ app.prepare().then(() => {
   })
 
   // start express server
-  server.listen(port, () => console.log('> GraphQL Server Listening on Port', port))
+  server.listen(port, () => console.log(`> Ready at ${process.env.SERVER_URL}`))
 })

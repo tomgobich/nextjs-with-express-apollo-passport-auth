@@ -1,7 +1,5 @@
 const passport = require('passport')
 
-// Basically for NON-gql routes
-
 module.exports = (server, passport) => {
   server.get('/auth/github', passport.authenticate('github'))
 

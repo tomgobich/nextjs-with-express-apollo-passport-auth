@@ -5,7 +5,7 @@ module.exports = {
         return resolve(req.user)
       }
 
-      return reject('Not Authenticated!')
+      return resolve(null)
     })
   }
 }
