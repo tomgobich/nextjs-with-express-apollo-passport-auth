@@ -5,9 +5,11 @@
 This example is a customized implementation of [ooaed's next-apollo-auth boilerplate](https://github.com/ooade/next-apollo-auth) that's merged with [Next.js example with-apollo-auth](https://github.com/zeit/next.js/tree/canary/examples/with-apollo-auth).
 
 *Node Version Note*
+
 This project uses [object descructoring [see support]](https://node.green/#ES2015-syntax-destructuring--assignment-object-destructuring-expression) within the Express server, so either use Node v6.4.0+ or replace the destructuring within `server > data > resolvers.js`
 
 *Graphql File Types*
+
 Within next.config.js you'll find an exported function called withGraphql. This enabled us to use the `.graphql || .gql` file types. This has yet to be implemented.
 
 ## Main Technologies Used
